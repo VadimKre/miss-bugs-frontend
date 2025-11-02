@@ -19,11 +19,9 @@ export function BugDetails() {
     async function loadBug() {
         try {
             const bug = await bugService.getById(bugId)
-            console.log('bug: ', bug)
             setBug(bug)
         } catch (err) {
             showErrorMsg('Cannot load bug')
-
         }
     }
 
@@ -33,6 +31,7 @@ export function BugDetails() {
         <h4>{bug.title}</h4>
         <p>{`Description: ${bug.description}`}</p>
         <p>Severity: <span>{bug.severity}</span></p>
+        <Link to={`http://localhost:3030/api/bug/${bugId}/pdf`}><button>Download</button></Link>
         <Link to="/bug">Back to List</Link>
     </div>
 

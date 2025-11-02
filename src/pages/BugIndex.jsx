@@ -11,7 +11,6 @@ export function BugIndex() {
     const [filterBy, setFilterBy] = useState({})
 
     useEffect(() => {
-        console.log('test')
         loadBugs(filterBy)
     }, [filterBy])
 

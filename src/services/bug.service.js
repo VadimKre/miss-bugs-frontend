@@ -10,6 +10,7 @@ export const bugService = {
     getById,
     save,
     remove,
+    downloadPDF,
 }
 
 const BASE_URL = 'http://localhost:3030/api/'
@@ -31,7 +32,11 @@ async function remove(bugId) {
 }
 
 async function save(bug) {
-    console.log('bug to save: ', bug)
     const bugs = await axios.get(BASE_URL + 'bug/save', {params: bug})
     return bugs.data
+}
+
+async function downloadPDF(bugId){
+    const pdf = await axios.get(BASE_URL + `bug/${bugId}/pdf`)
+    return pdf
 }
