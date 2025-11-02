@@ -15,8 +15,8 @@ export const bugService = {
 const BASE_URL = 'http://localhost:3030/api/'
 
 
-async function query() {
-    const bugs = await axios.get(BASE_URL + 'bugs')
+async function query(filterBy) {
+    const bugs = await axios.get(BASE_URL + 'bugs', filterBy && {params: filterBy})
     return bugs.data
 }
 
