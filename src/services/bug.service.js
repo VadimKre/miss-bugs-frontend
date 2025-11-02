@@ -22,7 +22,7 @@ async function query(filterBy) {
 }
 
 async function getById(bugId) {
-    const bug = await axios.get(BASE_URL + `bug/${bugId}`)
+    const bug = await axios.get(BASE_URL + `bug/${bugId}`, { withCredentials: true })
     return bug.data
 }
 
