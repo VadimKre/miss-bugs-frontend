@@ -16,24 +16,49 @@ export const bugService = {
 const BASE_URL = 'http://localhost:3030/api/'
 
 
-async function query(filterBy) {
-    const bugs = await axios.get(BASE_URL + 'bugs', filterBy && {params: filterBy})
-    return bugs.data
+async function query(filterBy, sortBy) {
+    const url = BASE_URL + 'bug'
+    try{
+        const bugs = await axios.get(url, filterBy && {params: filterBy})
+        return bugs.data
+    } catch(e){
+        throw e
+    }
 }
 
 async function getById(bugId) {
-    const bug = await axios.get(BASE_URL + `bug/${bugId}`, { withCredentials: true })
-    return bug.data
+    const url = BASE_URL + 'bug'
+    try{
+        const bug = await axios.get(url + `/${bugId}`, { withCredentials: true })
+        return bug.data
+    } catch(e){
+        throw e
+    }
 }
 
 async function remove(bugId) {
-    const bugs = await axios.get(BASE_URL + `bug/${bugId}/remove`)
-    return bugs
+    const url = BASE_URL + 'bug'
+    try{
+        const bugs = await axios.delete(url + `/${bugId}`)
+        return bugs
+    } catch(e){
+        throw e
+    }
+    
 }
 
-async function save(bug) {
-    const bugs = await axios.get(BASE_URL + 'bug/save', {params: bug})
-    return bugs.data
+async function save(bugToSave) {
+    const url = BASE_URL + 'bug'
+    // const bugs = await axios.get(BASE_URL + 'bug/save', {params: bug})
+    const method = bugToSave._id ? 'put' : 'post'
+
+    try{
+        const bug = await axios[method](url, bugToSave)
+        return bug.data
+    } catch(e){
+        throw err
+    }
+    
 }
 
 async function downloadPDF(bugId){

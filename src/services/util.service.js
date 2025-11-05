@@ -10,6 +10,7 @@ function debounce(func, timeout = 300) {
     return (...args) => {
         clearTimeout(timer)
         timer = setTimeout(() => {
+            // console.log('this:', this)
             func.apply(this, args)
         }, timeout)
     }
