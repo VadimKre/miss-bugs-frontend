@@ -3,7 +3,6 @@ import axios from 'axios'
 import { storageService } from './async-storage.service.js'
 import { utilService } from './util.service.js'
 
-const STORAGE_KEY = 'bugDB'
 
 export const bugService = {
     query,
@@ -13,13 +12,15 @@ export const bugService = {
     downloadPDF,
 }
 
-const BASE_URL = 'http://localhost:3030/api/'
+const STORAGE_KEY = 'bugDB'
+
+const BASE_URL = 'http://localhost:3030/api/bug/'
 
 
 async function query(filterBy, sortBy) {
-    const url = BASE_URL + 'bug'
+    console.log('filterBy in query: ', filterBy)
     try{
-        const bugs = await axios.get(url, filterBy && {params: filterBy})
+        const bugs = await axios.get(BASE_URL, filterBy && {params: {filterBy}})
         return bugs.data
     } catch(e){
         throw e
@@ -27,9 +28,8 @@ async function query(filterBy, sortBy) {
 }
 
 async function getById(bugId) {
-    const url = BASE_URL + 'bug'
     try{
-        const bug = await axios.get(url + `/${bugId}`, { withCredentials: true })
+        const bug = await axios.get(BASE_URL + `${bugId}`, { withCredentials: true })
         return bug.data
     } catch(e){
         throw e
@@ -37,10 +37,9 @@ async function getById(bugId) {
 }
 
 async function remove(bugId) {
-    const url = BASE_URL + 'bug'
     try{
-        const bugs = await axios.delete(url + `/${bugId}`)
-        return bugs
+        const bugs = await axios.delete(BASE_URL + `${bugId}`)
+        return bugs.data
     } catch(e){
         throw e
     }
@@ -48,12 +47,10 @@ async function remove(bugId) {
 }
 
 async function save(bugToSave) {
-    const url = BASE_URL + 'bug'
-    // const bugs = await axios.get(BASE_URL + 'bug/save', {params: bug})
     const method = bugToSave._id ? 'put' : 'post'
 
     try{
-        const bug = await axios[method](url, bugToSave)
+        const bug = await axios[method](BASE_URL, bugToSave)
         return bug.data
     } catch(e){
         throw err
@@ -62,6 +59,6 @@ async function save(bugToSave) {
 }
 
 async function downloadPDF(bugId){
-    const pdf = await axios.get(BASE_URL + `bug/${bugId}/pdf`)
+    const pdf = await axios.get(BASE_URL + `${bugId}/pdf`)
     return pdf
 }

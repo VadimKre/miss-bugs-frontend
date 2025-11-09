@@ -9,6 +9,7 @@ import { BugFilter } from '../cmps/BugFilter.jsx'
 export function BugIndex() {
     const [bugs, setBugs] = useState([])
     const [filterBy, setFilterBy] = useState({})
+    const [sortBy, setSortBy] = useState({})
 
     useEffect(() => {
         loadBugs(filterBy)
@@ -35,12 +36,14 @@ export function BugIndex() {
         const bug = {
             title: prompt('Bug title?'),
             severity: +prompt('Bug severity?'),
-            description: prompt('Bug description?')
+            description: prompt('Bug description?'),
+            labels: prompt('Bug Labels - comma seperated').split(',').map(label => label.trim())
         }
         try {
             const savedBug = await bugService.save(bug)
             console.log('Added Bug', savedBug)
-            setBugs(prevBugs => [...prevBugs, savedBug])
+            // setBugs(prevBugs => [...prevBugs, savedBug])
+            loadBugs()
             showSuccessMsg('Bug added')
         } catch (err) {
             console.log('Error from onAddBug ->', err)

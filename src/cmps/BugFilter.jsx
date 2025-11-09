@@ -16,6 +16,7 @@ export function BugFilter({ filterBy, onSetFilterBy }){
     const handleChange = ({ target }) => {
         let { value, name: field, type } = target
         value = type === 'text' ? value : +value
+        if (field === 'labels' && value.length > 0) value = value.split(',').map(label => label.trim())
         setFilterByToEdit({ ...filterByToEdit, [field]: value} )
     }
 
@@ -26,6 +27,13 @@ export function BugFilter({ filterBy, onSetFilterBy }){
                 name='title'
                 placeholder='Filter by bug title'
                 value={filterByToEdit.title || ''} 
+                onChange={handleChange}
+            />
+            <input 
+                type="text" 
+                name='labels'
+                placeholder='Filter by labels comma seperated'
+                value={filterByToEdit.labels || ''} 
                 onChange={handleChange}
             />
             <span className="filter-text">Min Severity: </span>
