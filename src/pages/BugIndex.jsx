@@ -10,13 +10,19 @@ export function BugIndex() {
     const [bugs, setBugs] = useState([])
     const [filterBy, setFilterBy] = useState({})
     const [sortBy, setSortBy] = useState({})
+    const [sortDir, setSortDir] = useState('desc')
+    const [pageIdx, setPageIdx] = useState(1)
 
     useEffect(() => {
-        loadBugs(filterBy)
-    }, [filterBy])
+        loadBugs(filterBy, sortBy, pageIdx)
+    }, [filterBy, sortBy, pageIdx])
+    
+    // useEffect(() => {
+    //     loadBugs(filterBy, sortBy, pageIdx=1)
+    // }, [sortDir])
 
-    async function loadBugs(filterBy) {
-        const bugs = await bugService.query(filterBy)
+    async function loadBugs(filterBy, sortBy) {
+        const bugs = await bugService.query(filterBy, sortBy)
         setBugs(bugs)
     }
 
@@ -72,13 +78,38 @@ export function BugIndex() {
         setFilterBy(filterByToSet)
     }
 
+    function onSetSortBy(sortByToSet){
+        setSortBy(sortByToSet)
+    }
+
+    function handleSortChanghe(ev){
+        onSetSortBy(ev.target.id)
+    }
+
+    function handleSortDirChange(){
+        setSortDir((dir) => dir === 'desc' ? 'asc' : 'desc')
+    }
+
     return (
-        <section >
-            <h3>Bugs App</h3>
+        <section>
+            <h2>Bugs App</h2>
             <main>
                 <button onClick={onAddBug}>Add Bug ⛐</button>
+                <h3>Filter By:</h3>
                 <BugFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy}/>
+                <h3>Sort By:</h3>
+                
+
+                <input type="radio" id="title" name='sortBy' onChange={handleSortChanghe} value={sortBy}/>
+                <label htmlFor="vehicle1"> Title </label><br/>
+                <input type="radio" id="severity" name='sortBy' onChange={handleSortChanghe} value={sortBy}/>
+                <label htmlFor="vehicle2"> Severity </label><br/>
+                <input type="radio" id="createdAt" name='sortBy' onChange={handleSortChanghe} value={sortBy}/>
+                <label htmlFor="vehicle3"> Created At </label><br/>
+                Ascending order:
+                <input type='checkbox' name='sortDir' onChange={handleSortDirChange} />
                 <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
+                
             </main>
         </section>
     )

@@ -19,9 +19,13 @@ const BASE_URL = 'http://localhost:3030/api/bug/'
 
 async function query(filterBy, sortBy) {
     console.log('filterBy in query: ', filterBy)
+    const params = {}
+    filterBy && (params.filterBy = filterBy)
+    sortBy && (params.sortBy = sortBy)
     try{
-        const bugs = await axios.get(BASE_URL, filterBy && {params: {filterBy}})
-        return bugs.data
+        const { data } = await axios.get(BASE_URL, filterBy && {params})
+        console.log('pages: ', data.totalPages)
+        return data.bugs
     } catch(e){
         throw e
     }
