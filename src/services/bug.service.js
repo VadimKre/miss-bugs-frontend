@@ -17,15 +17,17 @@ const STORAGE_KEY = 'bugDB'
 const BASE_URL = 'http://localhost:3030/api/bug/'
 
 
-async function query(filterBy, sortBy) {
-    console.log('filterBy in query: ', filterBy)
+async function query(filterBy, sortBy, pageIdx, sortDir) {
+    console.log('pageIdx in query: ', pageIdx)
     const params = {}
     filterBy && (params.filterBy = filterBy)
     sortBy && (params.sortBy = sortBy)
+    pageIdx && (params.pageIdx = pageIdx)
+    sortDir && (params.sortDir = sortDir)
     try{
         const { data } = await axios.get(BASE_URL, filterBy && {params})
-        console.log('pages: ', data.totalPages)
-        return data.bugs
+        console.log('data: ', data)
+        return {bugs: data.bugs, totalPages: data.totalPages}
     } catch(e){
         throw e
     }

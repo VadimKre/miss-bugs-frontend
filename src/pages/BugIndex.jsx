@@ -12,18 +12,22 @@ export function BugIndex() {
     const [sortBy, setSortBy] = useState({})
     const [sortDir, setSortDir] = useState('desc')
     const [pageIdx, setPageIdx] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
 
     useEffect(() => {
-        loadBugs(filterBy, sortBy, pageIdx)
-    }, [filterBy, sortBy, pageIdx])
+        console.log(pageIdx)
+        loadBugs(filterBy, sortBy, pageIdx, sortDir)
+    }, [filterBy, pageIdx])
     
-    // useEffect(() => {
-    //     loadBugs(filterBy, sortBy, pageIdx=1)
-    // }, [sortDir])
+    useEffect(() => {
+        setPageIdx(1)
+        loadBugs(filterBy, sortBy, pageIdx, sortDir)
+    }, [sortBy, sortDir])
 
-    async function loadBugs(filterBy, sortBy) {
-        const bugs = await bugService.query(filterBy, sortBy)
+    async function loadBugs(filterBy, sortBy, pageIdx, sortDir) {
+        const { bugs, totalPages } = await bugService.query(filterBy, sortBy, pageIdx, sortDir)
         setBugs(bugs)
+        setTotalPages(totalPages)
     }
 
     async function onRemoveBug(bugId) {
@@ -90,6 +94,10 @@ export function BugIndex() {
         setSortDir((dir) => dir === 'desc' ? 'asc' : 'desc')
     }
 
+    function handlePageChange({ target }) {
+        setPageIdx(+target.value)
+    }
+
     return (
         <section>
             <h2>Bugs App</h2>
@@ -109,7 +117,21 @@ export function BugIndex() {
                 Ascending order:
                 <input type='checkbox' name='sortDir' onChange={handleSortDirChange} />
                 <BugList bugs={bugs} onRemoveBug={onRemoveBug} onEditBug={onEditBug} />
-                
+                <div className="pagination-controls">
+                    <h3>Page:</h3>
+                    {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((idx) => (
+                        <label key={idx}>
+                            <input
+                                type="radio"
+                                name="pageIdx"
+                                value={idx}
+                                checked={pageIdx === idx}
+                                onChange={handlePageChange}
+                            />
+                            {idx}
+                        </label>
+                    ))}
+                </div>
             </main>
         </section>
     )
