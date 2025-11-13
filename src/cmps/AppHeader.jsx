@@ -1,7 +1,8 @@
 
 import { useEffect } from 'react'
-import { UserMsg } from './UserMsg'
 import { NavLink } from 'react-router-dom'
+import { UserMsg } from './UserMsg'
+import { LoginSignup } from './LoginSignup.jsx'
 
 export function AppHeader() {
     useEffect(() => {
@@ -19,6 +20,7 @@ export function AppHeader() {
                     <NavLink to="/about">About</NavLink>
                 </nav>
             </div>
+            <LoginSignup />
             <UserMsg />
         </header>
     )
