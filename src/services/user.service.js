@@ -15,6 +15,7 @@ export const userService = {
     signup,
     logout,
     getLoggedinUser
+    
 }
 
 // const STORAGE_KEY = 'userDB'
@@ -99,4 +100,6 @@ function saveLocalUser(user) {
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
     return user
 }
+
+
 
