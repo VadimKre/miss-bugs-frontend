@@ -46,7 +46,7 @@ async function getById(userId) {
 
 async function remove(userId) {
     try{
-        const users = await axios.delete(BASE_URL + `${userId}`)
+        const users = await axios.delete(BASE_URL + `${userId}`, { withCredentials: true })
         return users.data
     } catch(e){
         throw e
@@ -57,7 +57,7 @@ async function save(userToSave) {
     const method = userToSave._id ? 'put' : 'post'
 
     try{
-        const user = await axios[method](BASE_URL, userToSave)
+        const user = await axios[method](BASE_URL, userToSave, { withCredentials: true })
         return user.data
     } catch(e){
         throw err
