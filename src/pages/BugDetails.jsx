@@ -6,6 +6,12 @@ import { useParams } from 'react-router'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
+const PDF_BASE_URL =
+    import.meta.env.VITE_BUG_PDF_URL ||
+    (import.meta.env.DEV
+        ? 'http://localhost:3030'
+        : 'https://miss-bugs-backend.onrender.com')
+
 
 export function BugDetails() {
 
@@ -32,7 +38,7 @@ export function BugDetails() {
         <p>{`Description: ${bug.description}`}</p>
         <p>Severity: <span>{bug.severity}</span></p>
         <p>Labels: {bug.labels.join(', ')}</p>
-        <Link to={`http://localhost:3030/api/bug/${bugId}/pdf`}><button>Download</button></Link>
+        <Link to={`${PDF_BASE_URL}/api/bug/${bugId}/pdf`}><button>Download</button></Link>
         <Link to="/bug">Back to List</Link>
     </div>
 

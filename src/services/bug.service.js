@@ -14,7 +14,11 @@ export const bugService = {
 
 const STORAGE_KEY = 'bugDB'
 
-const BASE_URL = 'http://localhost:3030/api/bug/'
+const BASE_URL =
+    import.meta.env.VITE_BUGS_URL ||
+    (import.meta.env.DEV
+        ? 'http://localhost:3030/api/bug/'
+        : 'https://miss-bugs-backend.onrender.com/api/bug/')
 
 
 async function query(filterBy, sortBy, pageIdx, sortDir) {

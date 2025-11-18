@@ -20,8 +20,16 @@ export const userService = {
 
 // const STORAGE_KEY = 'userDB'
 
-const AUTH_URL = 'http://localhost:3030/api/auth/'
-const BASE_URL = 'http://localhost:3030/api/user/'
+const AUTH_URL =
+    import.meta.env.VITE_AUTH_URL ||
+    (import.meta.env.DEV
+        ? 'http://localhost:3030/api/auth/'
+        : 'https://miss-bugs-backend.onrender.com/api/auth/')
+const BASE_URL =
+    import.meta.env.VITE_USERS_URL ||
+    (import.meta.env.DEV
+        ? 'http://localhost:3030/api/user/'
+        : 'https://miss-bugs-backend.onrender.com/api/user/')
 
 const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
 
@@ -100,6 +108,5 @@ function saveLocalUser(user) {
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN_USER, JSON.stringify(user))
     return user
 }
-
 
 
