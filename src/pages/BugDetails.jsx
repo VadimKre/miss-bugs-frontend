@@ -1,10 +1,9 @@
-
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { bugService } from '../services/bug.service.js'
 import { showErrorMsg } from '../services/event-bus.service.js'
 import { useParams } from 'react-router'
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { BugMsg } from '../cmps/BugMsg.jsx'
 
 const PDF_BASE_URL =
     import.meta.env.VITE_BUG_PDF_URL ||
@@ -20,7 +19,7 @@ export function BugDetails() {
 
     useEffect(() => {
         loadBug()
-    }, [])
+    }, [bugId])
 
     async function loadBug() {
         try {
@@ -40,6 +39,7 @@ export function BugDetails() {
         <p>Labels: {bug.labels.join(', ')}</p>
         <Link to={`${PDF_BASE_URL}/api/bug/${bugId}/pdf`}><button>Download</button></Link>
         <Link to="/bug">Back to List</Link>
+        <BugMsg bugId={bugId} />
     </div>
 
 }

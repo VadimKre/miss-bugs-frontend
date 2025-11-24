@@ -36,6 +36,7 @@ export function BugIndex() {
             console.log('Deleted Succesfully!')
             setBugs(prevBugs => prevBugs.filter((bug) => bug._id !== bugId))
             showSuccessMsg('Bug removed')
+            loadBugs()
         } catch (err) {
             console.log('Error from onRemoveBug ->', err)
             showErrorMsg('Cannot remove bug')
